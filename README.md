@@ -24,6 +24,6 @@ At the moment of writing only a single block can be edited per page.
 
 Dependencies
 ------------
-[TinyMCE](https://github.com/tinymce/tinymce) - Used for inline editing
-[CssXPath](https://github.com/PhpGt/CssXPath) - Convert CSS to Xpath so the same CSS selectors can be used in both JavaScript and PHP
+- [TinyMCE](https://github.com/tinymce/tinymce) - Used for inline editing
+- [CssXPath](https://github.com/PhpGt/CssXPath) - Convert CSS to Xpath so the same CSS selectors can be used in both JavaScript and PHP
 
