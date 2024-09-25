@@ -1,0 +1,5 @@
+# WARNING: This file should be outside the website directory
+# generate password using: php -r 'print password_hash($argc > 1 ? $argv[1] : readline("New password: "), PASSWORD_DEFAULT)."\n";' [password]
+# <user> <generated password> [# optional comments]
+gerben secret
+
