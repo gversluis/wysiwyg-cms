@@ -19,10 +19,6 @@ function saveDocument($target, $new_element_content) {
 	while (substr($target, 0, 1) == '/') $target = substr($target, 1);
 	if ($target == '') $target = 'index';
 	$content = file_get_contents($target.'.html');	// force .html extension at the end so we can never overwrite other files like .php or .htaccess
-	$file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '_', $target);
-	$file = mb_ereg_replace("([\.]{2,})", '', $file);
-	$backup_file = $file.'-'.date("Ymd-His").'-'.$_SESSION['username'].'.html';
-	$backup_file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '_', $backup_file);	// sanitize: better safe than sorry
 	$doc = new DOMDocument();
 	@$doc->loadHTML($content);
 	$xpath = new DomXPath($doc);
@@ -32,6 +28,10 @@ function saveDocument($target, $new_element_content) {
 	}
 	$new_content = $doc->saveHTML();
 	if (strcmp($content, $new_content) !== 0) {
+		$file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '_', $target);
+		$file = mb_ereg_replace("([\.]{2,})", '', $file);
+		$backup_file = $file.'-'.date("Ymd-His").'-'.$_SESSION['username'].'.html';
+		$backup_file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '_', $backup_file);	// sanitize: better safe than sorry
 		file_put_contents($backup_file, $content);
 		file_put_contents($file.'.html', $new_content);
 	}
