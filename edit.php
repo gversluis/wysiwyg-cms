@@ -16,7 +16,7 @@ function replaceChildren($element, $html_string) {
 }
 
 function saveDocument($target, $new_element_content) {
-	while (substr($target, 0, 1) == '/') $target = substr($target, 1);
+	while (substr($target, 0, 1) == '/' || substr($target, 0, 1) == '.') $target = substr($target, 1);	// remove risc for absolute paths, relative paths upwards, and hidden files
 	if ($target == '') $target = 'index';
 	$content = file_get_contents($target.'.html');	// force .html extension at the end so we can never overwrite other files like .php or .htaccess
 	$doc = new DOMDocument();
