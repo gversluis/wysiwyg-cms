@@ -35,11 +35,24 @@
         selector: '<?=SELECTOR?>',
         license_key: 'gpl',
         setup: function(editor) {
-                 addButton('.actions', 'save', function() { 
-                   submit('edit.php', { edit: window.location.pathname.replace(/\.html?(#.*?)?$/, ''), content: editor.getContent() }) 
-                 }); 
-						     console.log('the content ', editor.getContent());
-               },
+						original = '';
+						editor.on('init',function(e){
+							original = editor.getContent();
+						}),
+						editor.on('input',function(e){
+							if (editor.getContent() != original) {
+								if (!document.querySelector('.actions button[name=save]')) {
+	                addButton('.actions', 'save', function() { 
+	                  submit('edit.php', { edit: window.location.pathname.replace(/\.html?(#.*?)?$/, ''), content: editor.getContent() }) 
+	                }); 
+							    console.log('Change', editor);
+								}
+							} else {
+								save = document.querySelector('.actions button[name=save]');
+								if (save) save.remove();
+							}
+            });
+				},
         menubar: false,
         inline: true,
         toolbar: false,
@@ -56,7 +69,10 @@
 
 <?php
     exit;
-  }
+  } else {
 ?>
 alert('Could not load editor. Not logged in');
+<?php
+  }
+?>
 
