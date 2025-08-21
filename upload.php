@@ -73,7 +73,7 @@ if ($file['name']) {
 		error('uploaden van '.$filename.' ('.$file['size'].' bytes) is mislukt - neem contact op met uw homeboy');
 
 	$relative_filename=".".MEDIADIR.$filename;
-
+	addLog('Uploaded '.$absolute_filename);
 	echo json_encode(['location' => $relative_filename]);
 	exit;
 }
