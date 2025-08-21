@@ -1,7 +1,12 @@
 <?php	
 	include('config.php');
   if (session_start() && $_SESSION['username']) {
+	$files = array_filter(scandir(__DIR__ . MEDIADIR), function($f) {
+		return is_file(__DIR__ . MEDIADIR . $f) && preg_match(ACCEPTS, $f);
+	});
+	$image_list = json_encode(array_values(array_map(function($f) use ($dir) { return ['title' => $f, 'value' => '.' . MEDIADIR . $f	]; }, $files)));
 ?>
+		let myImages = <?=$image_list?>;
 
     let submit = function(url, data, callback) {
       let formData = new URLSearchParams();
@@ -51,6 +56,7 @@
              });
              const result = await response.json();
              // expected JSON: { "location": "https://example.com/uploads/myimage.png" }
+             if (result.location) myImages.push({ title: result.location.replace(/^.*[\\/]/, ''), value: result.location }) && console.log('myimages', myImages);
              if (result.error) alert(result.error);
              else if (result.location && callback) callback(result.location);
              else if (result.location && input.files[0].type.startsWith('image/')) editor.insertContent('<img src="' + result.location + '"/>');
@@ -147,10 +153,7 @@
         paste_data_images: false,       // disable pasting images as base64
         images_upload_url: '',           // disables automatic upload
         images_reuse_filename: true,
-        image_list: [
-          { title: 'My image 1', value: './userfiles/github_profile.jpg' },
-          { title: 'My image 2', value: './userfiles/oooo ga960811.png' }
-        ],
+        image_list: myImages,
         image_title: false,
         automatic_uploads: true,
         file_picker_types: 'image',
