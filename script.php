@@ -64,6 +64,24 @@
          input.click();
       };
 
+      const contentChangedHandler = function(e) {
+			  const editor = tinymce.activeEditor;
+				if (editor.getContent() != original) {
+					if (!document.querySelector('.actions button[name=save]')) {
+						addButton('.actions', 'save', function() { 
+							submit('edit.php', { edit: window.location.pathname.replace(/\.html?(#.*?)?$/, ''), content: editor.getContent() });
+							original=editor.getContent();	// TODO: this assumes everything went well..
+							save = document.querySelector('.actions button[name=save]');
+							if (save) save.remove();
+						}); 
+						console.log('Change', editor);
+					}
+				} else {
+					save = document.querySelector('.actions button[name=save]');
+					if (save) save.remove();
+				}
+			};
+
       tinymce.init({
         selector: '<?=SELECTOR?>',
         license_key: 'gpl',
@@ -71,20 +89,9 @@
 						original = '';
 						editor.on('init',function(e){
 							original = editor.getContent();
+							editor.on('SetContent', contentChangedHandler);
 						}),
-						editor.on('input',function(e){
-							if (editor.getContent() != original) {
-								if (!document.querySelector('.actions button[name=save]')) {
-	                addButton('.actions', 'save', function() { 
-	                  submit('edit.php', { edit: window.location.pathname.replace(/\.html?(#.*?)?$/, ''), content: editor.getContent() }) 
-	                }); 
-							    console.log('Change', editor);
-								}
-							} else {
-								save = document.querySelector('.actions button[name=save]');
-								if (save) save.remove();
-							}
-            });
+						editor.on('input', contentChangedHandler);
             editor.on('drop', (e) => {
               e.preventDefault();          // prevent dropping files
               e.stopPropagation();
