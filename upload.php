@@ -52,7 +52,7 @@ if (@$_POST['delete']) {
   }
   if (!preg_match(ACCEPTS, @$absolute_filename))
     error('Verwijderen van '.$filename.' is mislukt - ik zei nog zo, ALLEEN PLAATJES', 400);
-  unlink(getcwd().MEDIADIR.$delete);
+  unlink(__DIR__.MEDIADIR.$delete);
 }
 
 reset($_FILES);
@@ -64,7 +64,7 @@ if ($file['name']) {
 		error('Invalid filename '.$filename, 400);
 	}
 
-	$absolute_filename=getcwd().MEDIADIR.$filename;
+	$absolute_filename=__DIR__.MEDIADIR.$filename;
 
 	if (!preg_match(ACCEPTS, @$absolute_filename))
 		error('uploaden van '.$filename.' is mislukt - ik zei nog zo, ALLEEN PLAATJES', 400);
