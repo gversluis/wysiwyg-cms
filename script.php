@@ -4,7 +4,7 @@
 	$files = array_filter(scandir(__DIR__ . MEDIADIR), function($f) {
 		return is_file(__DIR__ . MEDIADIR . $f) && preg_match(ACCEPTS, $f);
 	});
-	$image_list = json_encode(array_values(array_map(function($f) use ($dir) { return ['title' => $f, 'value' => '.' . MEDIADIR . $f	]; }, $files)));
+	$image_list = json_encode(array_values(array_map(function($f) { return ['title' => $f, 'value' => '.' . MEDIADIR . $f	]; }, $files)));
 ?>
 		let myImages = <?=$image_list?>;
 
